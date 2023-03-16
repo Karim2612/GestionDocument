@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>List Utilisateurs</title>
+	 <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"></head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sandstone/bootstrap.min.css">
+</head>
+<body>
+	<div th:insert="navbar :: navbar">  </div>
+	<div class="container text-center">
+		<div class="card bg-light mb-3" style="margin-top:20px;">
+			<h3 class="card-header" th:if="${note.id == null}">Ajouter une nouvel note</h3>
+			<h3 class="card-header" th:unless="${note.id == null}">Editer la note</h3>
+		<div class="card-body">
+		
+		<form th:action="@{/notes/save}" th:object="${note}" method="post" style="max-width: 600px; margin: 0 auto;">
+			<input type="hidden" th:field="*{id}" th:value="${note.id}">
+			<div class="m-3">
+				<div class="form-group row">
+					<label class="col-form-label col-sm-4">Sujet: </label>
+					<div class="col-sm-8">
+						<input type="text" th:field="*{sujet}" class="form-control" required>
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<label class="col-form-label col-sm-4">Texte: </label>
+					<div class="col-sm-8">
+						<input type="text" th:field="*{texte}" class="form-control" required>
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<label class="col-form-label col-sm-4">Dernière modification: </label>
+					<div class="col-sm-8">
+						<input type="date" th:field="*{deniereModification}" class="form-control" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-sm-4">Nom Utilisateur: </label>
+					<div class="col-sm-8">
+						<select th:field="*{utilisateur}" class="form-control" required>
+							<th:block th:each="utilisateur : ${listUtilisateurs}">
+								<option th:text="${utilisateur.nomUtilisateur}" th:value="${utilisateur.id}"/>
+							</th:block>
+						</select>
+					</div>
+				</div>
+					<div class="form-group row">
+					<label class="col-form-label col-sm-4">Nom Document: </label>
+					<div class="col-sm-8">
+						<select th:field="*{utilisateur}" class="form-control" required>
+							<th:block th:each="document : ${listDocuments}">
+								<option th:text="${document.nom}" th:value="${document.id}"/>
+							</th:block>
+						</select>
+					</div>
+				</div>
+				
+				<div class="text-center p-3">
+					<button type="submit" class="btn btn-primary"><i class="fas fa-save" style="margin-right:10px;"></i> Sauvegarder</button>
+				</div>
+			</div>
+		</form>
+		</div> <!-- fin body -->
+				<div class="card-footer text-muted">
+				  </div>
+				</div> <!-- fin card -->
+	</div>
+	<div th:insert="navbar :: footer">  </div>
+</body>
+</html>

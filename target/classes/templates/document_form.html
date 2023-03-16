@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>List Documents</title>
+	 <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"></head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sandstone/bootstrap.min.css">
+</head>
+<body>
+	<div th:insert="navbar :: navbar">  </div>
+	<div class="container text-center">
+		<div class="card bg-light mb-3" style="margin-top:20px;">
+			<h3 class="card-header" th:if="${document.id == null}">Créer un Document</h3>
+			<h3 class="card-header" th:unless="${document.id == null}">Editer le Document</h3>
+		<div class="card-body">
+		<form th:action="@{/documents/save}" th:object="${document}" method="post" style="max-width: 600px; margin: 0 auto;">
+			<input type="hidden" th:field="*{id}" th:value="${document.id}">
+			<div class="m-3">
+				<div class="form-group row">
+					<label class="col-form-label col-sm-4">Nom: </label>
+					<div class="col-sm-8">
+						<input type="text" th:field="*{nom}" class="form-control" required>
+					</div>
+				</div>
+								<div class="form-group row">
+					<label class="col-form-label col-sm-4">Derniere Date Modification: </label>
+					<div class="col-sm-8">
+						<input type="date" th:field="*{derniere_date_modification}" class="form-control" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-sm-4">Taille Document: </label>
+					<div class="col-sm-8">
+						<input type="number" th:field="*{taille_document}" class="form-control" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-sm-4">Version: </label>
+					<div class="col-sm-8">
+						<input type="number" step="0.1" th:field="*{version}" class="form-control" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-sm-4">Document Prive: </label>
+					<div class="col-sm-8">
+						<input type="number" step="0.1" th:field="*{document_prive}" class="form-control" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-sm-4">Approuve Par: </label>
+					<div class="col-sm-8">
+						<input type="text" step="0.1" th:field="*{approuve_par}" class="form-control" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-sm-4">Document Suffixe: </label>
+					<div class="col-sm-8">
+						<select th:field="*{typeDocument}" class="form-control" required>
+							<th:block th:each="typeDocument : ${listTypeDocuments}">
+								<option th:text="${typeDocument.suffixe}" th:value="${typeDocument.id}"/>
+							</th:block>
+						</select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-sm-4">Labels: </label>
+					<div class="col-sm-8 text-left">
+						<th:block th:each="label : ${listLabels}">
+							<div>
+								<input type="checkbox" th:field="*{labels}" th:text="${label.nom}" th:value="${label.id}" class="m-2">
+							</div>	
+						</th:block>
+					</div>
+				</div>
+				
+				</th:block>
+				<div class="text-center p-3">
+					<button type="submit" class="btn btn-primary"><i class="fas fa-save" style="margin-right:10px;"></i> Sauvegarder</button>
+				</div>
+			</div>
+		</form>
+		</div> <!-- fin body -->
+				<div class="card-footer text-muted">
+				  </div>
+				</div> <!-- fin card -->
+	</div>
+	<div th:insert="navbar :: footer">  </div>
+</body>
+</html>
